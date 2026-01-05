@@ -40,4 +40,15 @@ public class StudentServiceImpl implements StudentService {
                         student.getAge()
                 )).collect(Collectors.toList());
     }
+
+    @Override
+    public StudentResponseDto getStudentById(Long id) {
+        Student student = studentRepository.findById(id).orElseThrow(() -> new RuntimeException("Student not found"));
+        return new StudentResponseDto(
+                student.getId(),
+                student.getName(),
+                student.getEmail(),
+                student.getAge()
+        );
+    }
 }
