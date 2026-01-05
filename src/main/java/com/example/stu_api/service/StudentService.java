@@ -9,4 +9,5 @@ public interface StudentService {
     StudentResponseDto createStudent(StudentRequestDto studentRequestDto);
    List<StudentResponseDto> getAllStudents();
    StudentResponseDto getStudentById(Long id);
+   StudentResponseDto updateStudent(Long id, StudentRequestDto studentRequestDto);
 }

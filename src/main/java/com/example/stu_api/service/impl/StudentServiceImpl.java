@@ -51,4 +51,20 @@ public class StudentServiceImpl implements StudentService {
                 student.getAge()
         );
     }
+
+    @Override
+    public StudentResponseDto updateStudent(Long id, StudentRequestDto studentRequestDto) {
+        Student student = studentRepository.findById(id).orElseThrow(()-> new RuntimeException("Student not found"));
+        student.setName(studentRequestDto.getName());
+        student.setEmail(studentRequestDto.getEmail());
+        student.setAge(studentRequestDto.getAge());
+        Student updatedStudent = studentRepository.save(student);
+
+        return new StudentResponseDto(
+                updatedStudent.getId(),
+                updatedStudent.getName(),
+                updatedStudent.getEmail(),
+                updatedStudent.getAge()
+        );
+    }
 }
