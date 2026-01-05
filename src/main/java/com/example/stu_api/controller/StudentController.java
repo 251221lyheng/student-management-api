@@ -4,6 +4,7 @@ import com.example.stu_api.dto.StudentRequestDto;
 import com.example.stu_api.dto.StudentResponseDto;
 import com.example.stu_api.service.StudentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -44,5 +45,13 @@ public class StudentController {
     public ResponseEntity<String> delete(@PathVariable Long id){
         studentService.deleteStudent(id);
         return ResponseEntity.ok("Student deleted successfully");
+    }
+
+    @GetMapping("/page")
+    public ResponseEntity<Page<StudentResponseDto>> getStudents(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size
+    ){
+        return ResponseEntity.ok(studentService.getStudents(page,size));
     }
 }

@@ -7,6 +7,9 @@ import com.example.stu_api.exception.ResourceNotFoundException;
 import com.example.stu_api.repository.StudentRepository;
 import com.example.stu_api.service.StudentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.nio.file.ReadOnlyFileSystemException;
@@ -74,5 +77,15 @@ public class StudentServiceImpl implements StudentService {
     public void deleteStudent(Long id) {
         Student student = studentRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Student not found"));
         studentRepository.delete(student);
+    }
+
+    // add pagination
+    @Override
+    public Page<StudentResponseDto> getStudents(int page, int size){
+        Pageable pageable = PageRequest.of(page,size);
+        return studentRepository.findAll(pageable)
+                .map(student -> new StudentResponseDto(
+                        student.getId(),student.getName(),student.getEmail(),student.getAge()
+                ));
     }
 }
