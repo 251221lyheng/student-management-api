@@ -3,11 +3,13 @@ package com.example.stu_api.service.impl;
 import com.example.stu_api.dto.StudentRequestDto;
 import com.example.stu_api.dto.StudentResponseDto;
 import com.example.stu_api.entity.Student;
+import com.example.stu_api.exception.ResourceNotFoundException;
 import com.example.stu_api.repository.StudentRepository;
 import com.example.stu_api.service.StudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.ReadOnlyFileSystemException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,7 +45,7 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public StudentResponseDto getStudentById(Long id) {
-        Student student = studentRepository.findById(id).orElseThrow(() -> new RuntimeException("Student not found"));
+        Student student = studentRepository.findById(id).orElseThrow(() ->new ResourceNotFoundException("Student not found"));
         return new StudentResponseDto(
                 student.getId(),
                 student.getName(),
@@ -54,7 +56,7 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public StudentResponseDto updateStudent(Long id, StudentRequestDto studentRequestDto) {
-        Student student = studentRepository.findById(id).orElseThrow(()-> new RuntimeException("Student not found"));
+        Student student = studentRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Student not found"));
         student.setName(studentRequestDto.getName());
         student.setEmail(studentRequestDto.getEmail());
         student.setAge(studentRequestDto.getAge());
@@ -70,7 +72,7 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public void deleteStudent(Long id) {
-        Student student = studentRepository.findById(id).orElseThrow(()-> new RuntimeException("Student not found"));
+        Student student = studentRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Student not found"));
         studentRepository.delete(student);
     }
 }
